@@ -1,24 +1,24 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import "./App.css";
+import Header from "./components/header";
+import Inputs from "./components/inputs";
+import axios from "axios";
+import MainComponent from "./components/main";
 
 function App() {
+  const [light, setLight] = useState<boolean>(false);
+  const [data, setData] = useState<string[]>([]);
+
+  useEffect(() => {
+    axios
+      .get("https://restcountries.com/v3.1/all")
+      .then((res) => setData(res.data));
+  }, []);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header light={light} setLight={setLight} />
+      <Inputs light={light} setLight={setLight} data={data} />
+      <MainComponent light={light} setLight={setLight} data={data} />
     </div>
   );
 }
